@@ -4,15 +4,15 @@ const path        = require('path');
 const Waitlist    = require('../models/waitlist.js');
 const EmailClient = require('./email.js');
 const config      = require('../config/config.js');
-const React     = require('react');
-const ReactDOMServer = require('react-dom/server');
-const JSX       = require('node-jsx').install();
-const EventsApp = React.createFactory(require('./components/EventsApp.react'));
-const AnouncementsApp = React.createFactory(require('./components/AnouncementsApp.react'));
+// const React     = require('react');
+// const ReactDOMServer = require('react-dom/server');
+// const JSX       = require('node-jsx').install();
+// const EventsApp = React.createFactory(require('./components/EventsApp.react'));
+// const AnouncementsApp = React.createFactory(require('./components/AnouncementsApp.react'));
 const User      = require('../models/user.js');
-const GCEvent   = require('../models/GCEvent.js');
-const SlackMsg  = require('../models/SlackMsg.js');
-const calendar  = require('./calendar.js');
+// const GCEvent   = require('../models/GCEvent.js');
+// const SlackMsg  = require('../models/SlackMsg.js');
+// const calendar  = require('./calendar.js');
 
 // Middleware
 // Authentication Check
@@ -30,76 +30,76 @@ const isLoggedIn = function checkLoggedIn(req, res, next) {
   res.redirect('/');
 }
 
-//Get Event data
-const getEvents = function getEventsData(req, res, next){
-
-  GCEvent.getEvents(0,0, function(events){
-
-
-    req.body.eventsmarkup = ReactDOMServer.renderToString(
-      EventsApp({
-        events:events
-      })
-    );
-
-    req.body.events = events;
-    return next();
-  });
-}
-
-const getTweets = function getTweetsData(req,res,next){
-  Tweet.getTweets(0,0, function(tweets){
-
-    req.body.tweetsmarkup = ReactDOMServer.renderToString(
-      TweetsApp({
-        tweets: tweets
-      })
-    );
-
-    req.body.tweets = tweets;
-    return next();
-  });
-}
-
-const getAnouncements = function getAnouncementsData(req,res,next){
-  SlackMsg.getSlackMsgs(0,0,function(anouncements){
-
-    req.body.anouncementsmarkup = ReactDOMServer.renderToString(
-      AnouncementsApp({
-        anouncements:anouncements
-      })
-    );
-
-    req.body.anouncements = anouncements;
-    return next();
-  });
-}
-
-const getQRImage = function getQRImageData(req,res,next){
-  var url = 'http://qru.hackru.org:8080/images/'+req.user.mlh_data.email+'.png';
-  var r = request.defaults({encoding:null});
-  r.get(url,(err,response,body)=>{
-    if(err){
-      console.log(err);
-    }else if(response.statusCode === 404 && (req.body.qrRetries == null || req.body.qrRetries < 3)){
-      console.log('404 ERROR');
-      //NOT SURE IF THIS IS COOL-> generate a new QRImage by passing in email to QRU server
-      var qrurl = 'http://qru.hackru.org:8080/viewqr?email='+req.user.mlh_data.email;
-      request.get(qrurl,(error,resp,bod)=>{
-          if(req.body.qrRetries == null){
-            req.body.qrRetries = 1;
-          }else{
-            req.body.qrRetries += 1;
-          }
-          getQRImageData(req,res,next);
-      });
-    }
-    else{
-      req.body.qrimage = new Buffer(body).toString('base64');
-      return next();
-    }
-  });
-}
+// //Get Event data
+// const getEvents = function getEventsData(req, res, next){
+//
+//   GCEvent.getEvents(0,0, function(events){
+//
+//
+//     req.body.eventsmarkup = ReactDOMServer.renderToString(
+//       EventsApp({
+//         events:events
+//       })
+//     );
+//
+//     req.body.events = events;
+//     return next();
+//   });
+// }
+//
+// const getTweets = function getTweetsData(req,res,next){
+//   Tweet.getTweets(0,0, function(tweets){
+//
+//     req.body.tweetsmarkup = ReactDOMServer.renderToString(
+//       TweetsApp({
+//         tweets: tweets
+//       })
+//     );
+//
+//     req.body.tweets = tweets;
+//     return next();
+//   });
+// }
+//
+// const getAnouncements = function getAnouncementsData(req,res,next){
+//   SlackMsg.getSlackMsgs(0,0,function(anouncements){
+//
+//     req.body.anouncementsmarkup = ReactDOMServer.renderToString(
+//       AnouncementsApp({
+//         anouncements:anouncements
+//       })
+//     );
+//
+//     req.body.anouncements = anouncements;
+//     return next();
+//   });
+// }
+//
+// const getQRImage = function getQRImageData(req,res,next){
+//   var url = 'http://qru.hackru.org:8080/images/'+req.user.mlh_data.email+'.png';
+//   var r = request.defaults({encoding:null});
+//   r.get(url,(err,response,body)=>{
+//     if(err){
+//       console.log(err);
+//     }else if(response.statusCode === 404 && (req.body.qrRetries == null || req.body.qrRetries < 3)){
+//       console.log('404 ERROR');
+//       //NOT SURE IF THIS IS COOL-> generate a new QRImage by passing in email to QRU server
+//       var qrurl = 'http://qru.hackru.org:8080/viewqr?email='+req.user.mlh_data.email;
+//       request.get(qrurl,(error,resp,bod)=>{
+//           if(req.body.qrRetries == null){
+//             req.body.qrRetries = 1;
+//           }else{
+//             req.body.qrRetries += 1;
+//           }
+//           getQRImageData(req,res,next);
+//       });
+//     }
+//     else{
+//       req.body.qrimage = new Buffer(body).toString('base64');
+//       return next();
+//     }
+//   });
+// }
 
 // Initialization function
 const init = function RouteHandler(app, config, passport, upload) {
@@ -139,70 +139,72 @@ const init = function RouteHandler(app, config, passport, upload) {
     res.render('registration-confirmation.ejs');
   });
 
-  app.get('/gavelQuery',(req,res)=>{
-    var url = "https://gavel-ru.herokuapp.com/api/hackerquery/?name="+ encodeURI(req.query.name);
-    request.get(url,(err,resp,body)=>{
-      if(err) return;
-      res.send(body);
-    });
-  });
+  // app.get('/gavelQuery',(req,res)=>{
+  //   var url = "https://gavel-ru.herokuapp.com/api/hackerquery/?name="+ encodeURI(req.query.name);
+  //   request.get(url,(err,resp,body)=>{
+  //     if(err) return;
+  //     res.send(body);
+  //   });
+  // });
 
-  app.get('/dashboard',isLoggedIn,getEvents, getAnouncements, getQRImage,(req,res) =>{
+  // app.get('/dashboard',isLoggedIn,getEvents, getAnouncements, getQRImage,(req,res) =>{
+  app.get('/dashboard', isLoggedIn, (req,res) =>{
     if(req.user.registration_status==0){
       res.redirect('/register-mymlh');
-    } else if (req.user.registration_status == 5) {
-      res.render('dashboard-dayof.ejs',{
-        user: req.user,
-        qrimage:req.body.qrimage,
-        anouncementsMarkup: req.body.anouncementsmarkup,
-
-        eventsMarkup: req.body.eventsmarkup
-      });
     } else {
-      res.render('dashboard.ejs', { user: req.user, qrimage:req.body.qrimage, message: req.flash('dashboard') });
+    //   res.render('dashboard-dayof.ejs',{
+    //     user: req.user,
+    //     qrimage:req.body.qrimage,
+    //     anouncementsMarkup: req.body.anouncementsmarkup,
+    //
+    //     eventsMarkup: req.body.eventsmarkup
+    //   });
+    // } else {
+    //   res.render('dashboard.ejs', { user: req.user, qrimage:req.body.qrimage, message: req.flash('dashboard') });
+      res.render('dashboard.ejs', { user: req.user, message: req.flash('dashboard') });
     }
   });
 
-  app.get('/google4c0be74dc18e6027.html',(req,res)=>{
-    res.render('google4c0be74dc18e6027.html');
-  });
-
-  app.post('/callback/calendar',(req,res)=>{
-    if(req.headers['x-goog-resource-state'] == 'sync'){
-      res.sendStatus(201);
-    }else{
-        console.log(req);
-        res.sendStatus(200);
-        calendar.loadEvents();
-    }
-  });
-
-  app.post('/slack',(req,res)=>{
-    console.log(req);
-    if(req.body.type === 'url_verification'){
-      console.log(req.body);
-      res.send(''+req.body.challenge);
-    }else if(req.body.type === 'event_callback'){
-      console.log(req.body.event);
-      var slackEvent = req.body.event;
-      if(slackEvent.type === 'message'){
-        console.log(slackEvent.text);
-        if(slackEvent.channel === config.slack.channel){
-          var message ={
-            ts:slackEvent.ts,
-            text:slackEvent.text,
-            user:slackEvent.user
-          };
-          if(slackEvent.subtype == null || slackEvent.subtype != 'channel_join'){
-            SlackMsg.findOneAndUpdate({ts:message.ts},message,{upsert:true,new:true},(err,res)=>{
-              if(err) console.log(err);
-            });
-          }
-        }
-      }
-      res.send(200);
-    }
-  });
+  // app.get('/google4c0be74dc18e6027.html',(req,res)=>{
+  //   res.render('google4c0be74dc18e6027.html');
+  // });
+  //
+  // app.post('/callback/calendar',(req,res)=>{
+  //   if(req.headers['x-goog-resource-state'] == 'sync'){
+  //     res.sendStatus(201);
+  //   }else{
+  //       console.log(req);
+  //       res.sendStatus(200);
+  //       calendar.loadEvents();
+  //   }
+  // });
+  //
+  // app.post('/slack',(req,res)=>{
+  //   console.log(req);
+  //   if(req.body.type === 'url_verification'){
+  //     console.log(req.body);
+  //     res.send(''+req.body.challenge);
+  //   }else if(req.body.type === 'event_callback'){
+  //     console.log(req.body.event);
+  //     var slackEvent = req.body.event;
+  //     if(slackEvent.type === 'message'){
+  //       console.log(slackEvent.text);
+  //       if(slackEvent.channel === config.slack.channel){
+  //         var message ={
+  //           ts:slackEvent.ts,
+  //           text:slackEvent.text,
+  //           user:slackEvent.user
+  //         };
+  //         if(slackEvent.subtype == null || slackEvent.subtype != 'channel_join'){
+  //           SlackMsg.findOneAndUpdate({ts:message.ts},message,{upsert:true,new:true},(err,res)=>{
+  //             if(err) console.log(err);
+  //           });
+  //         }
+  //       }
+  //     }
+  //     res.send(200);
+  //   }
+  // });
 
 
   app.get('/account', isLoggedIn, (req, res)=>{

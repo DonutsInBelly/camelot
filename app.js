@@ -60,9 +60,9 @@ routes(app, config, passport, upload);
 errors(app);
 
 // #dashboard things
-setTimeout(eventfeed.loadEvents,5000);
+// setTimeout(eventfeed.loadEvents,5000);
 //setTimeout(eventfeed.setUpPushNotifications,5000);
-slackfeed.loadMsgs();
+// slackfeed.loadMsgs();
 
 
 // Launch
