@@ -16,9 +16,6 @@ const errors          = require('./main/errors.js'); // Contains Response for in
 const passConfig      = require('./main/passport.js'); // Contains Passport Setup, Deserialization and Serialization of Users.
 const multerConfig    = require('./main/multer.js'); // Contains the set up of file storage for uploads
 const config          = require('./config/config.js'); // Contains secrets
-//Dashboard specific stuff
-const eventfeed       = require('./main/calendar.js');
-const slackfeed       = require('./main/loadmsgs.js');
 
 // Set up Application
 // ***********************************************************
@@ -58,12 +55,6 @@ app.use(passport.session()); // Authenticates users from their cookies
 routes(app, config, passport, upload);
 // Load Error Handling last
 errors(app);
-
-// #dashboard things
-// setTimeout(eventfeed.loadEvents,5000);
-//setTimeout(eventfeed.setUpPushNotifications,5000);
-// slackfeed.loadMsgs();
-
 
 // Launch
 app.listen(port);
