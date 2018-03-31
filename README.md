@@ -1,20 +1,28 @@
 # HackRU-Application
-Steps to set up:
+Viewable demo: http://hackru.carlinau.me/  
+
+### Pre-Requisites
+- Node.js v6+
+- npm v3+
+- MongoDB v3.3+
+- Redis v4+
+
+### Steps to set up:
+- Get [Node.js and npm](https://nodejs.org/en/download/package-manager/)
 - Get MongoDB
-- Get Redis - https://www.digitalocean.com/community/tutorials/how-to-install-and-use-redis
-- Git Clone this Repo
-- npm install
-- node app.js
-- https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-14-04#set-up-reverse-proxy-server
+  - We currently use [MLab](https://mlab.com/)
+  - Actual instructions [here](https://docs.mongodb.com/manual/installation/)
+- Get [Redis](https://redis.io/download)
+  - [Digital Ocean Flavored Instructions](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-redis)
+- Git Clone this Repo to your working directory
+  - `git clone https://github.com/dominusbelli/camelot.git`
+- Go into the Repo directory and Install all dependencies
+  - `npm install`
+- Launch the server
+  - Listens on Port 8080 if no environment variable is assigned
+- Use this guide below for production ready techniques: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-14-04#set-up-reverse-proxy-server
 
-Dashboard stuff:
-- To see dashboard go to: localhost:8080/dashboard-dayof
-- Ask for client_secret.json from me on Slack.
-- Any questions: Slack - @jcatarata
-
-Notes:
-- There are two Twitter cards, "#twitter" is my shitty implementation that will be removed if I can't setup grabbing and displaying the medias in time.
-- Please don't look at my horrendous code lol.
-
-TODO:
-- OMG AM I DONE???
+### Contributors
+- @dominusbelli
+- @davidchen
+- @jandeancatarata
