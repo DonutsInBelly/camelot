@@ -22,6 +22,9 @@ Viewable demo: http://hackru.carlinau.me/
   - Listens on Port 8080 if no environment variable is assigned
 - Use this guide below for production ready techniques: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-14-04#set-up-reverse-proxy-server
 
+### Testing
+Performance testing is done through [Locust.io]()
+
 ### Contributors
 - @dominusbelli
 - @davidchen
